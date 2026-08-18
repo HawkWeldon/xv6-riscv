@@ -2,6 +2,6 @@
 #include "user/user.h"
 int main()
 {
-    printf("Hello, World! \n");
+    printf("Hello, World! from XV6.\n");
     return 0;
 }
