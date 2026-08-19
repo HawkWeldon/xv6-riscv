@@ -150,10 +150,9 @@ UPROGS=\
 	$U/_clear\
 	$U/_cmd\
 	$U/_head\
-	dummy\
 
-fs.img: mkfs/mkfs README $(UPROGS)
-	mkfs/mkfs fs.img README $(UPROGS)
+fs.img: mkfs/mkfs README dummy $(UPROGS)
+	mkfs/mkfs fs.img README dummy $(UPROGS)
 
 -include kernel/*.d user/*.d
 
