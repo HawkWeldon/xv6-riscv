@@ -2,7 +2,7 @@
 #include <kernel/types.h>
 #include <user/user.h>
 
-char buffer[1024];
+char buffer[512];
 
 int main(int argc, char* argv[])
 {
@@ -23,27 +23,26 @@ int main(int argc, char* argv[])
     if (fd < 0)
     {
         fprintf(2, "Failed to open the file.\n");
+        close(fd);
         exit(1);
     }
 
-    int n = read(fd, buffer, sizeof(buffer));
-    if (n < 0)
-    {
-        fprintf(2, "Read operation failed.\n");
-        exit(1);
-    }
-
+    int n;
     int i = 0;
     int j = n;
-    while(i < (count + 1) && j > 0)
+    while (n = read(fd, buffer, sizeof(buffer)) > 0)
     {
-        if(buffer[j] == '\n')
+        while(i < (count + 1) && j > 0)
         {
-            i++;
+            if(buffer[j] == '\n')
+            {
+                i++;
+            }
+            j--;
         }
-        j--;
     }
-
+    
+    close(fd);
     printf("%s",&buffer[j+2]);
     return 0;
 }
