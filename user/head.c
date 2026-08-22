@@ -28,10 +28,16 @@ int main(int argc, char* argv[])
 
     int n;
     int i = 0;
-    int j = 0;
+    int j;
 
     while ((n = read(fd, buffer, sizeof(buffer))) > 0)
     {
+        if (n < 0)
+        {
+            fprintf(2, "Failed to read.\n");
+            exit(1);
+        }
+        j = 0;
         while(i < count && j < n)
         {
             if(buffer[j] == '\n')
@@ -40,10 +46,9 @@ int main(int argc, char* argv[])
             }
             j++;
         }
+        write(1,buffer,j);
     }
 
-    buffer[j] = '\0';
-    printf("%s", buffer);
     close(fd);
     return 0;
 }

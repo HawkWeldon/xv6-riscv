@@ -31,18 +31,22 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    int n = read(fd_in, buffer, sizeof(buffer));
-    if (n < 0)
-    {
-        fprintf(2, "Failed to read.\n");
-        exit(1);
-    }
+    int n;
 
-    int m = write(fd_out, buffer, sizeof(buffer));
-    if (m < 0)
+    while ((n = read(fd_in, buffer, sizeof(buffer))) > 0)
     {
-        fprintf(2, "Failed to write.\n");
-        exit(1);
+        if (n < 0)
+        {
+            fprintf(2, "Failed to read.\n");
+            exit(1);
+        }
+
+        int m = write(fd_out, buffer, sizeof(buffer));
+        if (m < 0)
+        {
+            fprintf(2, "Failed to write.\n");
+            exit(1);
+        }
     }
 
     printf("Job Done.\n");

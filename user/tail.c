@@ -23,26 +23,51 @@ int main(int argc, char* argv[])
     if (fd < 0)
     {
         fprintf(2, "Failed to open the file.\n");
-        close(fd);
         exit(1);
     }
 
     int n;
-    int i = 0;
-    int j = n;
-    while (n = read(fd, buffer, sizeof(buffer)) > 0)
+    int i;
+    int total_count = 0;
+    while ((n = read(fd, buffer, sizeof(buffer))) > 0)
     {
-        while(i < (count + 1) && j > 0)
+        i = 0;
+        while(i < n)
         {
-            if(buffer[j] == '\n')
-            {
-                i++;
-            }
-            j--;
+            if (buffer[i] == '\n') total_count++;
+            i++;
         }
     }
-    
     close(fd);
-    printf("%s",&buffer[j+2]);
+
+    int skip_count = total_count - count;
+    if (skip_count < 0) skip_count = 0;
+
+    int current_count = 0;
+
+    fd = open(argv[1], O_RDONLY);
+    if (fd < 0)
+    {
+        fprintf(2, "Failed to open the file.\n");
+        exit(1);
+    }
+
+    while ((n = read(fd, buffer, sizeof(buffer))) > 0)
+    {
+        if (n < 0)
+        {
+            fprintf(2, "Failed to read.\n");
+            exit(1);
+        }
+        i = 0;
+        while(i < n)
+        {
+            if (current_count < skip_count) {if(buffer[i] == '\n') current_count++;}
+            else write(1, &buffer[i], 1);
+            i++;
+        }
+    }
+
+    close(fd);
     return 0;
 }
