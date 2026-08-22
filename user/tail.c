@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
     if (argc < 2)
     {
-        fprintf(2, "No arguments for head.\n");
+        fprintf(2, "No arguments for tail.\n");
         exit(1);
     }
     else if (argc == 2)
@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
     int fd = open(argv[1], O_RDONLY);
     if (fd < 0)
     {
-        fprintf(2, "Open operation failed.\n");
+        fprintf(2, "Failed to open the file.\n");
         exit(1);
     }
 
@@ -30,24 +30,20 @@ int main(int argc, char* argv[])
     if (n < 0)
     {
         fprintf(2, "Read operation failed.\n");
-        close(fd);
         exit(1);
     }
 
     int i = 0;
-    int j = 0;
-    while(i < count && j < n)
+    int j = n;
+    while(i < (count + 1) && j > 0)
     {
         if(buffer[j] == '\n')
         {
             i++;
         }
-        j++;
+        j--;
     }
-    buffer[j] = '\0';
 
-    printf("%s", buffer);
-
-    close(fd);
+    printf("%s",&buffer[j+2]);
     return 0;
 }

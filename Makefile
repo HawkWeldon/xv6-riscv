@@ -150,6 +150,7 @@ UPROGS=\
 	$U/_clear\
 	$U/_cmd\
 	$U/_head\
+	$U/_tail\
 
 fs.img: mkfs/mkfs README dummy $(UPROGS)
 	mkfs/mkfs fs.img README dummy $(UPROGS)
