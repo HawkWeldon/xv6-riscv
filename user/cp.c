@@ -2,7 +2,7 @@
 #include <kernel/types.h>
 #include <user/user.h>
 
-char buffer[1024];
+char buffer[512];
 
 int main(int argc, char* argv[])
 {
