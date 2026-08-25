@@ -156,6 +156,6 @@ sys_nfork()
     copyout(myproc()->pagetable, pid_arr + i * sizeof(int), 0, (char*)&pid, sizeof(int));
   }
   
-  //copyout(myproc()->pagetable, 0, pid_arr,(char*)pids, n*sizeof(int)); This is giving weird outputs, I am just sending out one value at a time.
+  //copyout(myproc()->pagetable, 0, pid_arr,(char*)pids, n*sizeof(int)); This is giving weird issue with the op, I am just sending out one value at a time.
   return n;
 }
