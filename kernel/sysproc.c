@@ -138,3 +138,25 @@ sys_get_process_child_count()
   argint(0, &pid);
   return pid_get_no_children(pid);
 }
+
+uint64
+sys_nfork()
+{
+  int n;
+  
+  argint(0, &n);
+  
+  uint64 pid_arr;
+  argaddr(1, &pid_arr);
+
+  for (int i = 0; i < n; i++)
+  {
+    int pid = kfork();
+    if (pid < 0) return -1;
+    if (pid == 0) return 0;
+    copyout(myproc()->pagetable, pid_arr + i * sizeof(int), 0, (char*)&pid, sizeof(int));
+  }
+  
+  //copyout(myproc()->pagetable, 0, pid_arr,(char*)pids, n*sizeof(int)); This is giving weird outputs, I am just sending out one value at a time.
+  return n;
+}

@@ -29,6 +29,7 @@ int getppid(void);
 int square(int);
 int get_child_count(void);
 int get_process_child_count(int);
+int nfork(int, int[]);
 
 // ulib.c
 int stat(const char *, struct stat *);
