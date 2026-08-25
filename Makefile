@@ -152,9 +152,10 @@ UPROGS=\
 	$U/_head\
 	$U/_tail\
 	$U/_cp\
+	$U/_mgrep\
 
-fs.img: mkfs/mkfs README dummy target $(UPROGS)
-	mkfs/mkfs fs.img README dummy target $(UPROGS)
+fs.img: mkfs/mkfs README dummy target gt1 gt2 gt3 $(UPROGS)
+	mkfs/mkfs fs.img README dummy target gt1 gt2 gt3 $(UPROGS)
 
 -include kernel/*.d user/*.d
 
