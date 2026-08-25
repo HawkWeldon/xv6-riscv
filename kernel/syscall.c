@@ -105,6 +105,7 @@ extern uint64 sys_close(void);
 extern uint64 sys_sync(void);
 extern uint64 sys_getppid(void);
 extern uint64 sys_square(void);
+extern uint64 sys_get_child_count(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -134,6 +135,7 @@ static uint64 (*syscalls[])(void) = {
   [SYS_sync]    sys_sync,
   [SYS_getppid] sys_getppid,
   [SYS_square]  sys_square,
+  [SYS_get_child_count] sys_get_child_count,
   // clang-format on
 };
 

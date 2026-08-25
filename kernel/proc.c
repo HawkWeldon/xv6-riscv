@@ -85,6 +85,7 @@ myproc(void)
   push_off();
   struct cpu *c = mycpu();
   struct proc *p = c->proc;
+  p->no_of_children = 0;
   pop_off();
   return p;
 }
@@ -295,6 +296,7 @@ kfork(void)
 
   acquire(&wait_lock);
   np->parent = p;
+  p->no_of_children++;
   release(&wait_lock);
 
   acquire(&np->lock);
@@ -612,6 +614,13 @@ kkill(int pid)
         p->state = RUNNABLE;
       }
       release(&p->lock);
+      acquire(&wait_lock);
+      struct proc* parent = p->parent;
+      if (!(parent == 0))
+      {
+        parent->no_of_children--;
+      }
+      release(&wait_lock);
       return 0;
     }
     release(&p->lock);
