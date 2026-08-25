@@ -136,5 +136,5 @@ sys_get_process_child_count()
 {
   int pid;
   argint(0, &pid);
-  
+  return pid_get_no_children(pid);
 }

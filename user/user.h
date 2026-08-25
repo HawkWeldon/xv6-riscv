@@ -27,6 +27,8 @@ int uptime(void);
 int sync(void);
 int getppid(void);
 int square(int);
+int get_child_count(void);
+int get_process_child_count(int);
 
 // ulib.c
 int stat(const char *, struct stat *);

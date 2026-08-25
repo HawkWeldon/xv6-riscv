@@ -85,7 +85,6 @@ myproc(void)
   push_off();
   struct cpu *c = mycpu();
   struct proc *p = c->proc;
-  p->no_of_children = 0;
   pop_off();
   return p;
 }
@@ -125,6 +124,7 @@ allocproc(void)
 found:
   p->pid = allocpid();
   p->state = USED;
+  p->no_of_children = 0;
 
   // Allocate a trapframe page.
   if ((p->trapframe = (struct trapframe *)kalloc()) == 0) {
@@ -169,6 +169,7 @@ freeproc(struct proc *p)
   p->killed = 0;
   p->xstate = 0;
   p->state = UNUSED;
+  p->no_of_children = 0;
 }
 
 // Create a user page table for a given process, with no user memory,
@@ -296,7 +297,7 @@ kfork(void)
 
   acquire(&wait_lock);
   np->parent = p;
-  p->no_of_children++;
+  if (p != 0) p->no_of_children++;
   release(&wait_lock);
 
   acquire(&np->lock);
@@ -397,6 +398,9 @@ kwait(uint64 addr)
             return -1;
           }
           pp->parent = 0;
+
+          p->no_of_children--; //Because this decreases the count at the time of the process being reaped. 
+
           freeproc(pp);
           release(&pp->lock);
           release(&wait_lock);
@@ -614,13 +618,13 @@ kkill(int pid)
         p->state = RUNNABLE;
       }
       release(&p->lock);
-      acquire(&wait_lock);
-      struct proc* parent = p->parent;
-      if (!(parent == 0))
-      {
-        parent->no_of_children--;
-      }
-      release(&wait_lock);
+      // acquire(&wait_lock);
+      // struct proc* parent = p->parent;
+      // if (parent != 0)
+      // {
+      //   parent->no_of_children--;
+      // }
+      // release(&wait_lock);
       return 0;
     }
     release(&p->lock);
@@ -707,4 +711,21 @@ procdump(void)
     printk("%d %s %s", p->pid, state, p->name);
     printk("\n");
   }
+}
+
+// Custom pid child count
+int 
+pid_get_no_children(int pid)
+{
+  struct proc *p;
+  acquire(&wait_lock);
+  for (p = proc; p < &proc[NPROC]; p++) {
+    if (p->pid == pid) {
+      int ans = p->no_of_children;
+      release(&wait_lock);
+      return ans;
+    }
+  }
+  release(&wait_lock);
+  return -1;
 }

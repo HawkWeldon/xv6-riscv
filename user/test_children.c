@@ -7,7 +7,7 @@ int main() {
     
     int pid1 = fork();
     if (pid1 == 0) {
-        sleep(5);
+        pause(5);
         exit(0);
     }
 
@@ -15,7 +15,7 @@ int main() {
     
     int pid2 = fork();
     if (pid2 == 0) {
-        sleep(5);
+        pause(5);
         exit(0);
     }
 

@@ -24,3 +24,4 @@
 #define SYS_getppid 23
 #define SYS_square 24
 #define SYS_get_child_count 25
+#define SYS_get_process_child_count 26
