@@ -142,8 +142,7 @@ sys_get_process_child_count()
 uint64
 sys_nfork()
 {
-  int n;
-  
+  int n; 
   argint(0, &n);
   
   uint64 pid_arr;
