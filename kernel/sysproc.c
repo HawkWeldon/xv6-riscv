@@ -116,3 +116,11 @@ sys_getppid()
 {
   return myproc()->parent->pid;
 }
+
+uint64
+sys_square()
+{
+  int num;
+  argint(0, &num);
+  return num * num;
+}

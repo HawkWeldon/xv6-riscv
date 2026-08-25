@@ -26,6 +26,7 @@ int pause(int);
 int uptime(void);
 int sync(void);
 int getppid(void);
+int square(int);
 
 // ulib.c
 int stat(const char *, struct stat *);

@@ -154,6 +154,7 @@ UPROGS=\
 	$U/_cp\
 	$U/_mgrep\
 	$U/_ppid\
+	$U/_sq\
 
 fs.img: mkfs/mkfs README dummy target gt1 gt2 gt3 $(UPROGS)
 	mkfs/mkfs fs.img README dummy target gt1 gt2 gt3 $(UPROGS)
