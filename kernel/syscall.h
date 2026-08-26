@@ -30,3 +30,4 @@
 #define SYS_print_process_syscalls 29
 #define SYS_get_inode_num 30
 #define SYS_get_read_offset 31
+#define SYS_peek2 32

@@ -211,3 +211,28 @@ sys_get_read_offset()
   return f->off;
 }
 
+uint64
+sys_peek2()
+{
+  int fd;
+  argint(0, &fd);
+  if (fd < 0 || fd >= NOFILE) return -3; // Specific values are requested for FD_INODE and EOF so I am using -3 here.
+
+  uint64 destination;
+  argaddr(1, &destination);
+
+  int bytes;
+  argint(2, &bytes);
+
+  struct proc *p = myproc();
+  struct file *f = p->ofile[fd];
+  if (!(f != 0 && f->type == FD_INODE && f->readable != 0)) return -1;
+
+  int offset_cpy = f->off;
+  int n = fileread(f, destination, bytes);
+  f->off = offset_cpy;
+
+  if (n == 0) return -2;
+  else if(n < 0) return -3;
+  else return 0;
+}

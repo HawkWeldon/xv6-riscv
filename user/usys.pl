@@ -52,3 +52,4 @@ entry("print_syscalls");
 entry("print_process_syscalls");
 entry("get_inode_num");
 entry("get_read_offset");
+entry("peek2");
