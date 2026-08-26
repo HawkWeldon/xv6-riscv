@@ -189,7 +189,7 @@ sys_get_inode_num()
 
   struct file *f = p->ofile[fd];
 
-  if (f == 0 || f->type != FD_INODE || f->readable == 0) return -1;
+  if (!(f == 0 && f->type != FD_INODE && f->readable == 0)) return -1;
 
   return f->ip->inum;
 }
@@ -206,7 +206,8 @@ sys_get_read_offset()
 
   struct file *f = p->ofile[fd];
 
-  if (f == 0 || f->type != FD_INODE || f->readable == 0) return -1;
+  if (!(f == 0 && f->type != FD_INODE && f->readable == 0)) return -1;
 
   return f->off;
 }
+
