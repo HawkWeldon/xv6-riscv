@@ -32,6 +32,8 @@ int get_process_child_count(int);
 int nfork(int, int[]);
 int print_syscalls(void);
 int print_process_syscalls(int);
+int get_inode_num(int);
+int get_read_offset(int);
 
 // ulib.c
 int stat(const char *, struct stat *);

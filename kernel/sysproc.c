@@ -6,6 +6,9 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "vm.h"
+#include "fs.h"
+#include "sleeplock.h"
+#include "file.h"
 
 uint64
 sys_exit(void)
@@ -172,4 +175,38 @@ sys_print_process_syscalls()
   int pid;
   argint(0, &pid);
   return syscall_printer_pid(pid);
+}
+
+uint64
+sys_get_inode_num()
+{
+  int fd;
+  argint(0, &fd);
+  
+  struct proc *p = myproc();
+
+  if (fd < 0 || fd >= NOFILE) return -1;
+
+  struct file *f = p->ofile[fd];
+
+  if (f == 0 || f->type != FD_INODE || f->readable == 0) return -1;
+
+  return f->ip->inum;
+}
+
+uint64
+sys_get_read_offset()
+{
+  int fd;
+  argint(0, &fd);
+  
+  struct proc *p = myproc();
+
+  if (fd < 0 || fd >= NOFILE) return -1;
+
+  struct file *f = p->ofile[fd];
+
+  if (f == 0 || f->type != FD_INODE || f->readable == 0) return -1;
+
+  return f->off;
 }
