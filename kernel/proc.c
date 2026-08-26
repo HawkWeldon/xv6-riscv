@@ -126,6 +126,9 @@ found:
   p->state = USED;
   p->no_of_children = 0;
 
+  // Setting calls to 0;
+  for(int i = 0; i < 32; i++) p->no_of_calls[i] = 0;
+
   // Allocate a trapframe page.
   if ((p->trapframe = (struct trapframe *)kalloc()) == 0) {
     freeproc(p);
@@ -719,13 +722,58 @@ pid_get_no_children(int pid)
 {
   struct proc *p;
   acquire(&wait_lock);
-  for (p = proc; p < &proc[NPROC]; p++) {
-    if (p->pid == pid) {
+  for (p = proc; p < &proc[NPROC]; p++) 
+  {
+    if (p->pid == pid) 
+    {
       int ans = p->no_of_children;
       release(&wait_lock);
       return ans;
     }
   }
   release(&wait_lock);
+  return -1;
+}
+
+// Custom syscall number printer
+int
+syscall_printer()
+{
+  int n;
+  struct proc *p = myproc();
+  printk("Syscall count for the current process:\n");
+  printk("Syscall number ||| invocations\n");
+  
+  acquire(&p->lock);
+  for(int i = 1; i < 33; i++) if((n = p->no_of_calls[i - 1]) > 0) printk("       %d                %d     \n", i, n);
+  release(&p->lock);
+
+  return 0;
+}
+
+// Custom syscall number printer for entered pid
+int
+syscall_printer_pid(int pid)
+{
+  struct proc *p;
+  
+  for (p = proc; p < &proc[NPROC]; p++) 
+  {
+    acquire(&p->lock);
+    if (p->pid == pid)
+    {
+
+      printk("Syscall count for the process pid:%d\n", p->pid);
+      printk("Syscall number ||| invocations\n");
+      int n;
+      
+      for(int i = 1; i < 33; i++) if((n = p->no_of_calls[i - 1]) > 0) printk("       %d                %d     \n", i, n);
+
+      release(&p->lock);
+      return 0;
+    }
+    release(&p->lock);
+  }
+  
   return -1;
 }

@@ -102,4 +102,5 @@ struct proc {
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
   uint64 no_of_children;       // No of children
+  uint64 no_of_calls[32];      // No of calls
 };

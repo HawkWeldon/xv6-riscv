@@ -157,6 +157,7 @@ UPROGS=\
 	$U/_sq\
 	$U/_test_children\
 	$U/_test_nfork\
+	$U/_test_syscalls\
 
 fs.img: mkfs/mkfs README dummy target gt1 gt2 gt3 $(UPROGS)
 	mkfs/mkfs fs.img README dummy target gt1 gt2 gt3 $(UPROGS)

@@ -159,3 +159,17 @@ sys_nfork()
   //copyout(myproc()->pagetable, 0, pid_arr,(char*)pids, n*sizeof(int)); This is giving weird issue with the op, I am just sending out one value at a time.
   return n;
 }
+
+uint64
+sys_print_syscalls()
+{
+  return syscall_printer();
+}
+
+uint64
+sys_print_process_syscalls()
+{
+  int pid;
+  argint(0, &pid);
+  return syscall_printer_pid(pid);
+}
