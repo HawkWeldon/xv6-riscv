@@ -12,4 +12,4 @@
 #define FSSIZE      2000              // size of file system in blocks
 #define MAXPATH     128               // maximum file path name
 #define USERSTACK   1                 // user stack pages
-#define SYSCALLS    33                // No of syscalls + 1
+#define SYSCALLS    35              // No of syscalls + 1

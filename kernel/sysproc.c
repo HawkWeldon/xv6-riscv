@@ -236,3 +236,29 @@ sys_peek2()
   else if(n < 0) return -3;
   else return 0;
 }
+
+uint64
+sys_pte_valid()
+{
+  uint64 va;
+  argaddr(0, &va);
+
+  if (va >= MAXVA) panic("walk");
+
+  pagetable_t pagetable = myproc()->pagetable;
+  pte_t *pte;
+
+  for (int level = 2; level > 0; level--) 
+  {
+    pte = &pagetable[PX(level, va)];
+    if (*pte & PTE_V) pagetable = (pagetable_t)PTE2PA(*pte);
+    else return 0;
+  }
+
+  pte = &pagetable[PX(0, va)];
+
+  if(pte == 0) return 0;
+  if(*pte & PTE_V) return 1;
+
+  return 0;
+}
