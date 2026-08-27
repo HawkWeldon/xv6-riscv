@@ -777,3 +777,24 @@ syscall_printer_pid(int pid)
   
   return -1;
 }
+
+// Custom pid VA size fetcher
+uint64
+kgetvasize(int pid)
+{
+  struct proc *p;
+
+  for (p = proc; p < &proc[NPROC]; p++)
+  {
+    acquire(&p->lock);
+    if(p->pid == pid)
+    {
+      uint64 sz = p->sz;
+      release(&p->lock);
+      return sz;
+    }
+    release(&p->lock);
+  }
+
+  return -1;
+}

@@ -106,6 +106,7 @@ void            procdump(void);
 int             pid_get_no_children(int);
 int             syscall_printer(void);
 int             syscall_printer_pid(int);
+uint64          kgetvasize(int);
 
 // swtch.S
 void            swtch(struct context*, struct context*);

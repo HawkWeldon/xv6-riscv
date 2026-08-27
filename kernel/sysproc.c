@@ -293,3 +293,12 @@ sys_va2pa()
 
   return pa;
 }
+
+uint64
+sys_getvasize()
+{
+  int pid;
+  argint(0, &pid);
+
+  return kgetvasize(pid);
+}

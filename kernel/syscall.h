@@ -34,3 +34,4 @@
 #define SYS_pte_valid 34
 #define SYS_get_pteflags 35
 #define SYS_va2pa 37
+#define SYS_getvasize 38
