@@ -127,7 +127,7 @@ found:
   p->no_of_children = 0;
 
   // Setting calls to 0;
-  for(int i = 0; i < 32; i++) p->no_of_calls[i] = 0;
+  for(int i = 1; i < SYSCALLS; i++) p->no_of_calls[i - 1] = 0;
 
   // Allocate a trapframe page.
   if ((p->trapframe = (struct trapframe *)kalloc()) == 0) {
@@ -745,7 +745,7 @@ syscall_printer()
   printk("Syscall number ||| invocations\n");
   
   acquire(&p->lock);
-  for(int i = 1; i < 33; i++) if((n = p->no_of_calls[i - 1]) > 0) printk("       %d                %d     \n", i, n);
+  for(int i = 1; i < SYSCALLS; i++) if((n = p->no_of_calls[i - 1]) > 0) printk("       %d                %d     \n", i, n);
   release(&p->lock);
 
   return 0;
@@ -767,7 +767,7 @@ syscall_printer_pid(int pid)
       printk("Syscall number ||| invocations\n");
       int n;
       
-      for(int i = 1; i < 33; i++) if((n = p->no_of_calls[i - 1]) > 0) printk("       %d                %d     \n", i, n);
+      for(int i = 1; i < SYSCALLS; i++) if((n = p->no_of_calls[i - 1]) > 0) printk("       %d                %d     \n", i, n);
 
       release(&p->lock);
       return 0;
