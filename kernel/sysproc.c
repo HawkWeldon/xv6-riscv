@@ -243,7 +243,7 @@ sys_pte_valid()
   uint64 va;
   argaddr(0, &va);
 
-  if (va >= MAXVA) panic("walk");
+  if (va >= MAXVA) panic("va out of adress space");
 
   pagetable_t pagetable = myproc()->pagetable;
   pte_t *pte;
@@ -257,8 +257,25 @@ sys_pte_valid()
 
   pte = &pagetable[PX(0, va)];
 
-  if(pte == 0) return 0;
-  if(*pte & PTE_V) return 1;
+  if(pte == 0 || !(*pte & PTE_V)) return 0;
+  return 1;
+}
 
+uint64
+sys_get_pteflags()
+{
+  uint64 va;
+  argaddr(0, &va);
+
+  pte_t *pte = walk(myproc()->pagetable, va, 0);
+
+  if(pte == 0 || !(*pte & PTE_V)) 
+  {
+    printk("Invalid va.\n");
+    return 0;
+  }
+
+  printk("VA: %p -> R:%d W:%d X:%d U:%d \n", (void*)va, (*pte & PTE_R) > 0, (*pte & PTE_W) > 0, (*pte & PTE_X) > 0, (*pte & PTE_U) > 0);
+  
   return 0;
 }
