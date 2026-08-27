@@ -279,3 +279,17 @@ sys_get_pteflags()
   
   return 0;
 }
+
+uint64
+sys_va2pa()
+{
+  uint64 va;
+  argaddr(0, &va);
+
+  uint64 pa = walkaddr(myproc()->pagetable, va);
+  if (!pa) return -1;
+
+  pa = pa + va%PGSIZE;
+
+  return pa;
+}
