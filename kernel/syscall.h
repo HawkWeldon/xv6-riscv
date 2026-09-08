@@ -31,7 +31,7 @@
 #define SYS_get_inode_num 30
 #define SYS_get_read_offset 31
 #define SYS_peek2 32
-#define SYS_pte_valid 34
+#define SYS_pte_valid 33
 #define SYS_get_pteflags 35
-#define SYS_va2pa 37
-#define SYS_getvasize 38
+#define SYS_va2pa 36
+#define SYS_getvasize 37
